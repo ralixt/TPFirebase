@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <label for="name">Nom :</label>
+    <input type="text" id="name" name="name"></input>
+
+    <br><br>
+
+    <label for="age">Age :</label>
+    <input type="number" id="age" name="age" min="1"></input>
+
+    <br><br>
+
+    <button id="button">Ajouter</button>
+
+    <br><br>
+
+    <div>
+        <ul id="list">
+
+
+        </ul>
+    </div>
+
+    
+
+    <script type="module">
+
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        import { getDatabase, ref, set, push, onValue } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js'
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBS7Kb0A23fA5s8iPW2Cykao1dvIFmaJJ0",
+            authDomain: "tpfirebase-bb36c.firebaseapp.com",
+            databaseURL: "https://tpfirebase-bb36c-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "tpfirebase-bb36c",
+            storageBucket: "tpfirebase-bb36c.appspot.com",
+            messagingSenderId: "93660865823",
+            appId: "1:93660865823:web:4e2a524b9717e58c0e3c2a"
+        };
+        
+        
+    
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        console.log("app", app)
+
+        const database = getDatabase(app);
+        console.log("database", database)  
+        
+        // const user1Ref = ref(database, 'users/0')
+        // set( user1Ref,
+        //     {
+        //     username: "john",
+        //     age: 51,
+        //     }
+        // )
+        
+
+        // const usersRef = ref(database, 'users')
+        // const newUserRef = push(usersRef)
+        // console.log("nouvelle clé :", newUserRef)
+        // set(newUserRef,
+        //     {
+        //         user: "Marie",
+        //         age: 23
+        //     }
+        // )
+
+
+
+
+
+
+
+
+
+
+        const button = document.querySelector("#button")
+        const name = document.querySelector("#name")
+        const age = document.querySelector("#age")
+        //let cpt = 0
+
+        const list = document.querySelector("#list")
+
+
+
+        
+        
+
+        // function Ajout() {
+        //     console.log("Jaime les maths")
+        //     set(ref(database, 'users/'+cpt),
+        //         {
+        //             username: name.value,
+        //             age: age.value,
+        //         }
+        //     )
+        //     cpt = cpt + 1
+        // }
+
+       
+ 
+        // const user0Ref = ref(database, 'users/0')
+        // onValue(user0Ref,
+        //     (snapshot) => {
+        //         const data = snapshot.val()
+        //         console.log(data)
+        //     }
+        // )
+
+        const userRef = ref(database, 'users')
+        onValue(userRef,
+            (snapshot) => {
+                const data = snapshot.val()
+                console.log(data)
+                let tab = Object.values(data)
+                list.innerHTML = tab.map(e => "<li><strong>"+e.user +" </strong>" + e.age+"</li><br>").join("")
+            }
+        )
+
+        
+
+
+
+        function Ajout(){
+            const usersRef = ref(database, 'users')
+            const newUserRef = push(usersRef)
+            console.log("nouvelle clé :", newUserRef)
+            set(newUserRef,
+                {
+                    user: name.value,
+                    age: age.value
+                }
+            )
+
+
+            
+        }
+    
+        button.addEventListener("click", Ajout);
+    </script>
+
+        
+    
+</body>
+</html>
